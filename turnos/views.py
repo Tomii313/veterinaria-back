@@ -10,6 +10,7 @@ from veterinarios.serializers import VeterinarioSerializer
 from .serializers import TurnoSerializer
 from rest_framework.response import Response
 from .pagination import TurnosPagination
+from animales.models import Animal
 
 
 # Create your views here.
@@ -146,6 +147,19 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+
+    @action(methods=['GET'], detail=True)
+    def historial_medico(self,request, pk=None):
+        animales = Animal.objects.get(id=pk)
+        
+        if not animales:
+            return Response({"message": "Animal no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        turnos = Turno.objects.filter(animal=animales)
+        if not turnos:
+            return Response({"message": "Turnos no encontrados"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = TurnoSerializer(turnos, many=True)
+        return Response(serializer.data)
 
 
 

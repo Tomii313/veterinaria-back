@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Animal, Estado
-from .serializers import AnimalSerializer, EstadoSerializer
+from .models import Animal
+from .serializers import AnimalSerializer
 from .pagination import AnimalPagination
 
 
@@ -56,16 +56,3 @@ class AnimalViewSet(viewsets.ModelViewSet):
                 return Response({"message": "Duenio no encontrado"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"message": "Parametro no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-class EstadoViewSet(viewsets.ModelViewSet):
-    serializer_class = EstadoSerializer
-    def get_queryset(self):
-        return Estado.objects.all()
-
-    @action(methods=['GET'], detail=False)
-    def filtrar_estado(self,request,pk=None):
-        parametro = request.query_params.get('estado')
-        if parametro:
-            estados = self.get_queryset().filter(estado=parametro)
-            serializer = self.serializer_class(estados, many=True)
-            return Response(serializer.data)
-        return Response({"message": "Parametro no encontrado"}, status=status.HTTP_404_NOT_FOUND)
