@@ -8,6 +8,8 @@ class Animal(models.Model):
         ("VACUNACION", "Vacunación Pendiente"),
         ("INTERNACION", "Internacion"),
         ("DESPARASITACION", "Desparasitacion"),
+        ("SANO", "Sano"),
+        ("FALLECIDO", "Fallecido")
     ]
     raza = models.CharField(max_length=100, null=True, blank=True)
     peso = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2)
@@ -16,11 +18,10 @@ class Animal(models.Model):
     genero = models.CharField(max_length=100, null=True, blank=True)
     especie = models.CharField(max_length=50, null=True, blank=True)
     duenio = models.ForeignKey('duenios.Duenio', on_delete=models.CASCADE, related_name="mascotas", null=True, blank=True)
-    estado = models.CharField(max_length=100, choices=estados, blank=True, null=True)
+    estado = models.CharField(max_length=100, choices=estados, default="TRATAMIENTO")
     """ veterinario = models.ForeignKey('veterinarios.Veterinario', on_delete=models.CASCADE) """
 
     def __str__(self):
         return f"{self.nombre} - {self.especie} {self.edad} AÑOS"
 
 
-        

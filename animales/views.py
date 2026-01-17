@@ -56,3 +56,32 @@ class AnimalViewSet(viewsets.ModelViewSet):
                 return Response({"message": "Duenio no encontrado"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"message": "Parametro no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
+
+    @action(methods=['GET'], detail=False)
+    def select_estado(self, request):
+        return Response([{'value': k, 'label': v} for k,v in Animal.estados])
+
+
+    @action(methods=['GET'], detail=False)
+    def filtrar_estado(self,request):
+        parametro = request.query_params.get('estado')
+        if not parametro:
+            return Response({'message': 'Parametro no encontrado'}, status=status.HTTP_400_BAD_REQUEST)
+        animales = self.get_queryset().filter(estado=parametro)
+        if animales.exists():
+            serializer = self.serializer_class(animales, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'message': 'No se encontraron animales con ese estado'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    @action(methods=['GET'], detail=False)
+    def internados(self,request):
+        internados = self.get_queryset().filter(estado="INTERNACION").count()
+        return Response(internados)
+
+
+    @action(methods=['GET'], detail=False)
+    def solo_internados(self, request):
+        animales = self.get_queryset().filter(estado="INTERNACION")
+        serializer = self.serializer_class(animales, many=True)

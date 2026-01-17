@@ -11,6 +11,8 @@ from .serializers import TurnoSerializer
 from rest_framework.response import Response
 from .pagination import TurnosPagination
 from animales.models import Animal
+from datetime import date,datetime
+
 
 
 # Create your views here.
@@ -160,6 +162,19 @@ class TurnoViewSet(viewsets.ModelViewSet):
 
         serializer = TurnoSerializer(turnos, many=True)
         return Response(serializer.data)
+
+
+    @action(methods=['GET'], detail=False)
+    def turno_en_curso(self,request):
+        fecha_actual = date.today()
+        hora_actual = datetime.now().time()
+        turno = Turno.objects.filter(fecha=fecha_actual, hora=hora_actual, estado="Confirmado")
+        if not turno:
+            return Response({"message": "no hay turnos en curso"}, status=status.HTTP_200_OK)
+        serializer = TurnoSerializer(turno, many=True)
+        return Response(serializer.data)
+        
+
 
 
 
