@@ -25,3 +25,28 @@ class Animal(models.Model):
         return f"{self.nombre} - {self.especie} {self.edad} AÑOS"
 
 
+class Estudios(models.Model):
+
+    
+    TIPO = [
+        ('RX', 'Radiografía'),
+        ('SANGRE', 'Análisis de Sangre'),
+        ('ECO', 'Ecografía'),
+        ("ORINA", "Análisis de Orina"),
+        ('OTRO', 'Otro'),
+    ]
+    
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name="estudios")
+    tipo = models.CharField(max_length=100, choices=TIPO)
+    informe = models.TextField(blank=True, null=True)
+    fecha = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    archivo = models.FileField(upload_to='estudios/%Y/%m/%d/', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.tipo} - {self.fecha}"
+
+    class Meta:
+        verbose_name ="Estudio"
+        verbose_name_plural = "Estudios"
+    

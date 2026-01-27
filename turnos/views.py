@@ -12,6 +12,9 @@ from rest_framework.response import Response
 from .pagination import TurnosPagination
 from animales.models import Animal
 from datetime import date,datetime
+from internacion.models import Internacion
+from internacion.serializers import InternacionSerializer
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 
 
@@ -20,6 +23,7 @@ from datetime import date,datetime
 class TurnoViewSet(viewsets.ModelViewSet):
     serializer_class = TurnoSerializer
     pagination_class = TurnosPagination
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     def get_queryset(self):
         queryset = Turno.objects.all()
 
@@ -159,9 +163,16 @@ class TurnoViewSet(viewsets.ModelViewSet):
         turnos = Turno.objects.filter(animal=animales)
         if not turnos:
             return Response({"message": "Turnos no encontrados"}, status=status.HTTP_404_NOT_FOUND)
+        internaciones = Internacion.objects.filter(animal=animales)
+        if not internaciones:
+            return Response({"message": "Internaciones no encontradas"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = TurnoSerializer(turnos, many=True)
-        return Response(serializer.data)
+        serializer2 = InternacionSerializer(internaciones, many=True)
+        return Response({
+    "turnos": serializer.data,
+    "internaciones": serializer2.data
+})
 
 
     @action(methods=['GET'], detail=False)
@@ -175,8 +186,18 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
         
 
-
-
+    @action(methods=['POST'], detail=True)
+    def cancelacion_de_turno(self,request,pk=None):
+        fecha_actual = date.today()
+        hora_actual = datetime.now().time()
+        turno = self.get_object()
+        if turno.estado == "Pendiente" and turno.fecha < fecha_actual and turno.hora < hora_actual:
+            turno.estado = "Cancelado"
+            turno.save()
+            return Response({"message": "Turno cancelado"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Turno no cancelable"}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 

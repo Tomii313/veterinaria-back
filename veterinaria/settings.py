@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*p#xpn3)%ychjt9^gun&anfz^x^fdk8vn)fp!cd1u%xib!x^n#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -61,6 +62,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
+    'internacion',
+    "inventario",
+    "django_filters",
+   
 
 ]
 
@@ -141,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-AR'
 
 TIME_ZONE = 'UTC'
 
@@ -154,9 +159,26 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=8),  
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+}

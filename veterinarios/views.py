@@ -10,12 +10,14 @@ from turnos.models import Turno
 from datetime import date, datetime
 from django.db.models import Q
 from turnos.serializers import TurnoSerializer
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 # Create your views here.
 
 
 class VeterinarioViewSet(viewsets.ModelViewSet):
     serializer_class = VeterinarioSerializer
     pagination_class = VeterinarioPagination
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     def get_queryset(self):
         return Veterinario.objects.all()
    

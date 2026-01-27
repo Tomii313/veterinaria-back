@@ -9,11 +9,14 @@ from .serializers import DuenioSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .pagination import DueniosPagination
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 # Create your views here.
 
 class DuenioViewSet(viewsets.ModelViewSet):
+    queryset = Duenio.objects.all()
     serializer_class = DuenioSerializer
     pagination_class = DueniosPagination
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     def get_queryset(self):
         return Duenio.objects.all()
 

@@ -1,18 +1,23 @@
+from animales.serializers import EstudiosSerializer
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Animal
-from .serializers import AnimalSerializer
-from .pagination import AnimalPagination
-
+from .models import Animal, Estudios
+from .serializers import AnimalSerializer, EstudiosSerializer
+from .pagination import AnimalPagination, EstudiosPagination
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 
 # Create your views here.
 
 class AnimalViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
     serializer_class = AnimalSerializer
     pagination_class = AnimalPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nombre', 'especie', 'duenio__apellido']
     def get_queryset(self):
         return Animal.objects.all()
 
@@ -85,3 +90,27 @@ class AnimalViewSet(viewsets.ModelViewSet):
     def solo_internados(self, request):
         animales = self.get_queryset().filter(estado="INTERNACION")
         serializer = self.serializer_class(animales, many=True)
+        return Response(serializer.data)
+
+
+class EstudiosViewSet(viewsets.ModelViewSet):
+    serializer_class = EstudiosSerializer
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    filter_backends = [DjangoFilterBackend]
+    pagination_class = EstudiosPagination
+    filterset_fields = {"tipo" : ["exact"], "animal__nombre" : ["exact", "icontains"], "fecha" : ["exact","gte", "lte"],}
+
+   
+    def get_queryset(self):
+        return Estudios.objects.all()
+
+
+    
+    @action(detail=False, methods=["get"])
+    def tipos(self, request):
+        return Response([
+            {"value": k, "label": v}
+            for k, v in Estudios.TIPO
+        ])
+
+    

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Animal
+from .models import Animal, Estudios
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -27,5 +27,13 @@ class AnimalDuenioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Animal
         fields = ("nombre",)
+
+class EstudiosSerializer(serializers.ModelSerializer):
+    animal_nombre = serializers.CharField(source="animal.nombre", read_only=True)
+    animal_dueño = serializers.CharField(source="animal.duenio.nombre", read_only=True)
+    duenio_apellido = serializers.CharField(source="animal.duenio.apellido", read_only=True)
+    class Meta:
+        model = Estudios
+        fields = '__all__'
 
   
