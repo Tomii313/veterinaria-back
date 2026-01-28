@@ -4,7 +4,7 @@ from django.db import models
 
 class Duenio(models.Model):
     nombre = models.CharField(max_length=100)
-    dni = models.IntegerField(null=True, blank=True)
+    dni = models.IntegerField(null=True, blank=True, unique=True)
     apellido = models.CharField(max_length=100)
     telefono = models.CharField(max_length=15)
     email = models.EmailField()
