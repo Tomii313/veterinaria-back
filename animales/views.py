@@ -17,20 +17,10 @@ class AnimalViewSet(viewsets.ModelViewSet):
     serializer_class = AnimalSerializer
     pagination_class = AnimalPagination
     filter_backends = [filters.SearchFilter]
-    search_fields = ['nombre', 'especie', 'duenio__apellido']
+    search_fields = ['nombre', 'especie', 'duenio__apellido', 'duenio__dni', 'duenio__nombre']
+
     def get_queryset(self):
         return Animal.objects.all()
-
-    @action(methods=['get'], detail=False)
-    def buscar(self,request,pk=None):
-        nombre = request.query_params.get('nombre')
-        if nombre:
-           mascota = self.get_queryset().filter(nombre=nombre)
-           if mascota.exists():
-               serializer_class = AnimalSerializer(mascota, many=True)
-               return Response(serializer_class.data)
-           else:
-               return Response({"message": "Mascota no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
     @action(methods=['GET'], detail=False)
     def especies(self,request, pk=None):

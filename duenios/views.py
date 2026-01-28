@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .pagination import DueniosPagination
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework import filters
 # Create your views here.
 
 class DuenioViewSet(viewsets.ModelViewSet):
@@ -17,6 +18,8 @@ class DuenioViewSet(viewsets.ModelViewSet):
     serializer_class = DuenioSerializer
     pagination_class = DueniosPagination
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nombre', 'apellido', 'dni']
     def get_queryset(self):
         return Duenio.objects.all()
 

@@ -87,6 +87,11 @@ class InternacionViewSet(viewsets.ModelViewSet):
         )
     
 
+    @action(detail=False, methods=['GET'])
+    def internaciones_activas(self,request):
+        internaciones = Internacion.objects.filter(fecha_salida__isnull=True).count()
+        return Response(internaciones)
+       
 
 class JaulasViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
