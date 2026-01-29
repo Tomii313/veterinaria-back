@@ -15,10 +15,20 @@ from datetime import date,datetime
 from internacion.models import Internacion
 from internacion.serializers import InternacionSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
-
+from drf_spectacular.utils import extend_schema_view, extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter
 
 
 # Create your views here.
+
+@extend_schema_view(
+        list=extend_schema(summary="Listar turnos"),
+        retrieve=extend_schema(summary="Detalle de turno"),
+        create=extend_schema(summary="Crear turno"),
+        update=extend_schema(summary="Actualizar turno"),
+        destroy=extend_schema(summary="Eliminar turno"),
+    )
 
 class TurnoViewSet(viewsets.ModelViewSet):
     serializer_class = TurnoSerializer
@@ -34,6 +44,23 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+    @extend_schema(
+        summary="Horarios disponibles según el veterinario y la fecha",
+        parameters=[
+            OpenApiParameter(
+                name="veterinario_id",
+                description="ID del veterinario",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+            OpenApiParameter(
+                name="fecha",
+                description="Fecha del turno",
+                required=True,
+                type=OpenApiTypes.DATE,
+            ),
+        ], responses={200: TurnoSerializer(many=True)},
+    )
     @action(detail=False, methods=['get'])
     def horarios_disponibles(self,request):
         veterinario_id = request.query_params.get("veterinario_id")
@@ -71,6 +98,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
         ]
         return Response(disponibles)
 
+    @extend_schema(
+        summary="Filtrar turnos por DNI",
+        parameters=[
+            OpenApiParameter(
+                name="dni",
+                description="DNI del dueño",
+                
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: TurnoSerializer(many=True)},
+    )
     @action(methods=['GET'], detail=False)
     def filtrar_dni(self,request,pk=None):
         parametro = request.query_params.get('dni')
@@ -86,6 +124,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response({"message": "Parametro no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 
+    @extend_schema(
+        summary="Filtrar turnos por veterinario",
+        parameters=[
+            OpenApiParameter(
+                name="veterinario_id",
+                description="ID del veterinario",
+                
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: TurnoSerializer(many=True)},
+    )
     @action(methods=['GET'], detail=False)
     def filtrar_turno_veterinario(self, request, pk=None):
         parametro = request.query_params.get('veterinario_id')
@@ -100,6 +149,18 @@ class TurnoViewSet(viewsets.ModelViewSet):
                 return Response({"message": "Veterinario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 
+
+    @extend_schema(
+        summary="Cancelar Turno",
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID del turno",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: TurnoSerializer(many=True)},
+    )
     @action(methods=['POST'], detail=True)
     def cancelar_turno(self, request, pk=None):
         turno = self.get_object()
@@ -112,6 +173,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
 
 
 
+    @extend_schema(
+        summary="Confirmar Turno",
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID del turno",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: TurnoSerializer(many=True)},
+    )
     @action(methods=['POST'], detail=True)
     def confirmar_turno(self, request, pk=None):
         turno = self.get_object()
@@ -123,6 +195,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+    @extend_schema(
+        summary="Veterinarios disponibles",
+        parameters=[
+            OpenApiParameter(
+                name="fecha",
+                description="Fecha del turno",
+                required=True,
+                type=OpenApiTypes.DATE,
+            ),
+        ], responses={200: VeterinarioSerializer(many=True)}
+    )
     @action(methods=['GET'], detail=False)
     def veterinarios_disponibles(self, request):
         fecha = request.GET.get("fecha")
@@ -153,7 +236,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-
+    @extend_schema(
+        summary="Historial médico",
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID del animal",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: TurnoSerializer(many=True)}
+    )
     @action(methods=['GET'], detail=True)
     def historial_medico(self,request, pk=None):
         animales = Animal.objects.get(id=pk)
@@ -175,6 +268,23 @@ class TurnoViewSet(viewsets.ModelViewSet):
 })
 
 
+    @extend_schema(
+        summary="Turno en curso",
+        parameters=[
+            OpenApiParameter(
+                name="fecha",
+                description="Fecha del turno",
+                required=True,
+                type=OpenApiTypes.DATE,
+            ),
+            OpenApiParameter(
+                name="hora",
+                description="Hora del turno",
+                required=True,
+                type=OpenApiTypes.TIME,
+            ),
+        ], responses={200: TurnoSerializer(many=True)}
+    )
     @action(methods=['GET'], detail=False)
     def turno_en_curso(self,request):
         fecha_actual = date.today()
@@ -186,6 +296,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
         
 
+    @extend_schema(
+        summary="Cancelar Turno",
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID del turno",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: TurnoSerializer(many=True)},
+    )
     @action(methods=['POST'], detail=True)
     def cancelacion_de_turno(self,request,pk=None):
         fecha_actual = date.today()

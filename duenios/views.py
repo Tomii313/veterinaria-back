@@ -11,8 +11,19 @@ from rest_framework.response import Response
 from .pagination import DueniosPagination
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework import filters
+from drf_spectacular.utils import extend_schema_view, extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter
 # Create your views here.
 
+
+@extend_schema_view(
+    list=extend_schema(summary="Listar dueños"),
+    retrieve=extend_schema(summary="Detalle de dueño"),
+    create=extend_schema(summary="Crear dueño"),
+    update=extend_schema(summary="Actualizar dueño"),
+    destroy=extend_schema(summary="Eliminar dueño"),
+)
 class DuenioViewSet(viewsets.ModelViewSet):
     queryset = Duenio.objects.all()
     serializer_class = DuenioSerializer
@@ -23,6 +34,18 @@ class DuenioViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Duenio.objects.all()
 
+    @extend_schema(
+        summary="Filtrar dueños por DNI",
+        description="Se inserta el DNI del dueño y se va a mostrar la información de este si coincide con uno existente.",
+        parameters=[
+            OpenApiParameter(
+                name="dni",
+                description="DNI del dueño",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+        ], responses={200: DuenioSerializer(many=True)}
+    )
     @action(detail=False, methods=['get'])
     def filtrar_dni(self, request):
         dni = request.query_params.get("dni")
@@ -34,7 +57,18 @@ class DuenioViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-  
+    @extend_schema(
+        summary="Eliminar dueño",
+        description="Eliminar un dueño.",
+        parameters=[
+            OpenApiParameter(
+                name="pk",
+                description="ID del dueño",
+                required=True,
+                type=OpenApiTypes.INT,
+            ),
+        ],
+    )
     @action(detail=True, methods=['POST'])
     def eliminar_duenio(self,request,pk=None):
         duenio = self.get_object()

@@ -7,6 +7,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenBlacklistView
 )
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView,SpectacularRedocView
+
 from .views import UserPermissionsView, MyTokenObtainPairView
 
 urlpatterns = [
@@ -22,7 +24,9 @@ urlpatterns = [
     path('', include('internacion.routers')),
     path('', include('inventario.routers')),
     path("permisos/", UserPermissionsView.as_view(), name="user-permissions"),
-  
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema')),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema')),
 
 ]
 

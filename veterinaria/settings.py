@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'internacion',
     "inventario",
     "django_filters",
+    "drf_spectacular",
    
 
 ]
@@ -135,11 +136,21 @@ else:
         }
     }
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
     )
 }
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Veterinaria',
+    'DESCRIPTION': 'Documentación de la API del sistema de veterinaria',
+    'VERSION': '1.0.0',
+    'SWAGGER_UI_SETTINGS': {
+        'docExpansion': 'none',
+    },
+}
 
 
 # Password validation

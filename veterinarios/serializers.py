@@ -7,6 +7,7 @@ class VeterinarioSerializer(serializers.ModelSerializer):
         model = Veterinario
         fields = '__all__'
 
+ 
 
 class HorarioSerializer(serializers.ModelSerializer):
     class Meta:
