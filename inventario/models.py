@@ -13,9 +13,17 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
 
+    class Meta:
+        verbose_name = "Producto"
+        verbose_name_plural = "Productos"
+
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre  
+
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
