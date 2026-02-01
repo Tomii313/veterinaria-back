@@ -34,6 +34,8 @@ class TurnoViewSet(viewsets.ModelViewSet):
     serializer_class = TurnoSerializer
     pagination_class = TurnosPagination
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
+
+    
     def get_queryset(self):
         queryset = Turno.objects.all()
 
