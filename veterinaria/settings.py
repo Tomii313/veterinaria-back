@@ -36,7 +36,7 @@ CLOUDINARY_STORAGE = {
 SECRET_KEY = 'django-insecure-*p#xpn3)%ychjt9^gun&anfz^x^fdk8vn)fp!cd1u%xib!x^n#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     # DESARROLLO → media local

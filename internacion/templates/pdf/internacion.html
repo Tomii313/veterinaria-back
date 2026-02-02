@@ -42,7 +42,6 @@
 <body>
 
     <div class="header">
-        <img src="/static/logo.png" width="120">
         <h1>Informe de Internación</h1>
     </div>
 
@@ -59,7 +58,7 @@
         <div class="obs">
             <p>{{ obs.observacion }}</p>
             <small>
-                {{ obs.veterinario.nombre }} {{ obs.veterinario.apellido }} · {{ obs.fecha }}
+                {{ obs.veterinario_nombre }} {{ obs.veterinario_apellido }} · {{ obs.fecha }}
             </small>
         </div>
         {% empty %}

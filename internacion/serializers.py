@@ -6,6 +6,8 @@ from django.db import transaction
 
 
 class ObservacionesSerializer(serializers.ModelSerializer):
+    veterinario_nombre = serializers.CharField(source="veterinario.nombre", read_only=True)
+    veterinario_apellido = serializers.CharField(source="veterinario.apellido", read_only=True)
     class Meta:
         model = Observaciones
         fields = '__all__'
