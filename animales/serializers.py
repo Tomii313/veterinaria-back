@@ -38,7 +38,12 @@ class EstudiosSerializer(serializers.ModelSerializer):
 
     def get_archivo(self, obj):
         try:
-            return obj.archivo.url
+            url = obj.archivo.url
+            # Si estamos en producción (Cloudinary), inyectamos el flag de attachment
+            if "cloudinary" in url:
+                # Reemplazamos /upload/ por /upload/fl_attachment/
+                return url.replace("/upload/", "/upload/fl_attachment/")
+            return url
         except Exception:
             return None
 
