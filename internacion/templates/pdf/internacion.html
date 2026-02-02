@@ -7,33 +7,94 @@
 
     <style>
         body {
-            font-family: Arial;
+            font-family: "Segoe UI", Arial, sans-serif;
             margin: 40px;
+            color: #1e293b;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #13ec5b;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .badge {
+            background: #eefdf3;
+            color: #13ec5b;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .section h3 {
+            font-size: 15px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 30px;
+            font-size: 14px;
+        }
+
+        .info-grid span {
+            font-weight: 700;
+            color: #0f172a;
         }
 
         .obs {
-            border-left: 4px solid #2ecc71;
-            padding-left: 10px;
-            margin-bottom: 10px;
+            background: #f8fafc;
+            border-left: 4px solid #13ec5b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .obs p {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+        }
+
+        .obs small {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
         }
 
         @media print {
-            button {
-                display: none;
+            body {
+                margin: 0;
             }
         }
     </style>
@@ -41,35 +102,44 @@
 
 <body>
 
-    <div class="header">
-        <h1>Informe de Internación</h1>
-    </div>
-
-    <div class="section">
-        <p><strong>Paciente:</strong> {{ internacion.animal.nombre }}</p>
-        <p><strong>Ingreso:</strong> {{ internacion.fecha_ingreso }}</p>
-        <p><strong>Salida:</strong> {{ internacion.fecha_salida|default:"—" }}</p>
-    </div>
-
-    <div class="section">
-        <h3>Observaciones</h3>
-
-        {% for obs in internacion.historial_observaciones.all %}
-        <div class="obs">
-            <p>{{ obs.observacion }}</p>
-            <small>
-                {{ obs.veterinario_nombre }} {{ obs.veterinario_apellido }} · {{ obs.fecha }}
-            </small>
+    <div class="card">
+        <div class="header">
+            <h1>Informe de Internación</h1>
+            <div class="badge">VetManager</div>
         </div>
-        {% empty %}
-        <p>No hay observaciones.</p>
-        {% endfor %}
+
+        <div class="section">
+            <h3>Datos del Paciente</h3>
+            <div class="info-grid">
+                <div><span>Paciente:</span> {{ internacion.animal.nombre }}</div>
+                <div><span>Especie:</span> {{ internacion.animal.especie }}</div>
+                <div><span>Ingreso:</span> {{ internacion.fecha_ingreso }}</div>
+                <div><span>Salida:</span> {{ internacion.fecha_salida|default:"—" }}</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Observaciones Clínicas</h3>
+
+            {% for obs in internacion.historial_observaciones.all %}
+            <div class="obs">
+                <p>{{ obs.observacion }}</p>
+                <small>
+                    {{ obs.veterinario_nombre }} {{ obs.veterinario_apellido }} · {{ obs.fecha }}
+                </small>
+            </div>
+            {% empty %}
+            <p>No hay observaciones registradas.</p>
+            {% endfor %}
+        </div>
     </div>
+
+    <footer>
+        Documento generado automáticamente · {{ now }}
+    </footer>
 
     <script>
-        window.onload = () => {
-            window.print();
-        };
+        window.onload = () => window.print();
     </script>
 
 </body>

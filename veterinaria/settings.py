@@ -52,7 +52,7 @@ else:
     # PRODUCCIÓN → Cloudinary
     STORAGES = {
         "default": {
-            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+            "BACKEND": "cloudinary_storage.storage.RawMediaCloudinaryStorage",
         },
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
