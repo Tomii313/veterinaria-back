@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Animal(models.Model):
@@ -41,7 +42,10 @@ class Estudios(models.Model):
     informe = models.TextField(blank=True, null=True)
     fecha = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    archivo = models.FileField(upload_to='estudios/%Y/%m/%d/', null=True, blank=True)
+    archivo = CloudinaryField(
+        'archivo',
+        resource_type='raw'
+    )
 
     def __str__(self):
         return f"{self.tipo} - {self.fecha}"
