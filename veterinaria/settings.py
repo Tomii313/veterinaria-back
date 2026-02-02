@@ -18,7 +18,7 @@ import cloudinary
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 
 CLOUDINARY_STORAGE = {
@@ -27,6 +27,8 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": "e9-1o-Y2Q8-ZTPiQ2crIIaUeRHg",
     "SECURE": True
 }
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -35,6 +37,27 @@ SECRET_KEY = 'django-insecure-*p#xpn3)%ychjt9^gun&anfz^x^fdk8vn)fp!cd1u%xib!x^n#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+
+if DEBUG:
+    # DESARROLLO → media local
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    # PRODUCCIÓN → Cloudinary
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 ALLOWED_HOSTS = ['*']
 
@@ -199,10 +222,10 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATIC_URL = '/static/'
-
+""" 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
+ """
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
