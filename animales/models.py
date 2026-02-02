@@ -45,6 +45,7 @@ class Estudios(models.Model):
     archivo = CloudinaryField(
     'archivo',
     resource_type='raw',
+    type='upload',
      
 )
 
