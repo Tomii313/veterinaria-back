@@ -37,8 +37,9 @@ class EstudiosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_archivo(self, obj):
-        if obj.archivo:
+        try:
             return obj.archivo.url
-        return None
+        except Exception:
+            return None
 
   
