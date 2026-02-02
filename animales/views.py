@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 # Create your views here.
@@ -164,6 +165,7 @@ class EstudiosViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     pagination_class = EstudiosPagination
     filterset_fields = {"tipo" : ["exact"], "animal__nombre" : ["exact", "icontains"], "fecha" : ["exact","gte", "lte"],}
+    parser_classes = (MultiPartParser, FormParser)
 
    
     def get_queryset(self):
