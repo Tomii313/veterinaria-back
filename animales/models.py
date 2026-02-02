@@ -43,11 +43,9 @@ class Estudios(models.Model):
     fecha = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     archivo = CloudinaryField(
-    'archivo',
-    resource_type='raw',
-    type='upload',
-     
-)
+    "archivo",
+    resource_type="auto",
+    )
 
     def __str__(self):
         return f"{self.tipo} - {self.fecha}"
