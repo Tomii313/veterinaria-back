@@ -40,14 +40,8 @@ class EstudiosSerializer(serializers.ModelSerializer):
         if not obj.archivo:
             return None
         try:
-            url = obj.archivo.url
-            
-            if "cloudinary.com" in url:
-                if "/raw/upload/" in url:
-                    return url.replace("/raw/upload/", "/raw/upload/fl_attachment/")
-                return url.replace("/upload/", "/upload/fl_attachment/")
-            return url
-        except:
+            return obj.archivo.url
+        except Exception:
             return None
 
   
