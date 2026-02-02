@@ -14,11 +14,19 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
-
+import cloudinary
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": "dosni47ce",
+    "API_KEY": "356478814254257",
+    "API_SECRET": "e9-1o-Y2Q8-ZTPiQ2crIIaUeRHg",
+    "SECURE": True
+}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -68,6 +76,8 @@ INSTALLED_APPS = [
     "inventario",
     "django_filters",
     "drf_spectacular",
+    "cloudinary_storage",
+    "cloudinary",
    
 
 ]
