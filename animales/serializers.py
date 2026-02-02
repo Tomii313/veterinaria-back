@@ -31,17 +31,9 @@ class EstudiosSerializer(serializers.ModelSerializer):
     animal_nombre = serializers.CharField(source="animal.nombre", read_only=True)
     animal_dueño = serializers.CharField(source="animal.duenio.nombre", read_only=True)
     duenio_apellido = serializers.CharField(source="animal.duenio.apellido", read_only=True)
-    archivo = serializers.SerializerMethodField()
+    archivo = serializers.FileField(use_url=True)
     class Meta:
         model = Estudios
         fields = '__all__'
 
-    def get_archivo(self, obj):
-        if not obj.archivo:
-            return None
-        try:
-            return obj.archivo.url
-        except Exception:
-            return None
-
-  
+   
