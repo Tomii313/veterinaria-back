@@ -31,7 +31,7 @@ class EstudiosSerializer(serializers.ModelSerializer):
     animal_nombre = serializers.CharField(source="animal.nombre", read_only=True)
     animal_dueño = serializers.CharField(source="animal.duenio.nombre", read_only=True)
     duenio_apellido = serializers.CharField(source="animal.duenio.apellido", read_only=True)
-    archivo = serializers.FileField(use_url=True)
+    archivo = serializers.FileField(required=False, allow_null=True)
     class Meta:
         model = Estudios
         fields = '__all__'

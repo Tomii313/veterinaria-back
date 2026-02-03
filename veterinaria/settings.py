@@ -26,8 +26,10 @@ CLOUDINARY_STORAGE = {
     "API_KEY": "356478814254257",
     "API_SECRET": "e9-1o-Y2Q8-ZTPiQ2crIIaUeRHg",
     "SECURE": True,
-    "ACCESS_MODE": "public"
+   
 }
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,9 +40,7 @@ SECRET_KEY = 'django-insecure-*p#xpn3)%ychjt9^gun&anfz^x^fdk8vn)fp!cd1u%xib!x^n#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 if DEBUG:
-    # DESARROLLO → media local
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -50,16 +50,15 @@ if DEBUG:
         },
     }
 else:
-    # PRODUCCIÓN → Cloudinary
     STORAGES = {
         "default": {
             "BACKEND": "cloudinary_storage.storage.RawMediaCloudinaryStorage",
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            # Cambiamos esto para que no pida el manifiesto obligatorio
+            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
         },
     }
-
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = [
