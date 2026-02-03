@@ -42,8 +42,13 @@ class Estudios(models.Model):
     informe = models.TextField(blank=True, null=True)
     fecha = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+<<<<<<< HEAD
     archivo = models.FileField(upload_to="estudios_pdf/")
 
+=======
+    archivo = models.URLField(blank=True, null=True) 
+    
+>>>>>>> 0b8380f11761bb307685700c8f19b65ad3ea96fa
     def __str__(self):
         return f"{self.tipo} - {self.fecha}"
 

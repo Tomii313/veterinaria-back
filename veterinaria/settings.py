@@ -26,7 +26,7 @@ CLOUDINARY_STORAGE = {
     "API_KEY": "356478814254257",
     "API_SECRET": "e9-1o-Y2Q8-ZTPiQ2crIIaUeRHg",
     "SECURE": True,
-   
+    "ACCESS_MODE": "public"
 }
 
 
