@@ -26,9 +26,16 @@ CLOUDINARY_STORAGE = {
     "API_KEY": "356478814254257",
     "API_SECRET": "e9-1o-Y2Q8-ZTPiQ2crIIaUeRHg",
     "SECURE": True,
-    "ACCESS_MODE": "public"
+    "ACCESS_MODE": "public",
+    "RESOURCE_TYPE": "raw"
 }
 
+cloudinary.config(
+    cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
+    api_key=CLOUDINARY_STORAGE["API_KEY"],
+    api_secret=CLOUDINARY_STORAGE["API_SECRET"],
+    secure=True
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
