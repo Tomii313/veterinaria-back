@@ -42,10 +42,8 @@ class Estudios(models.Model):
     informe = models.TextField(blank=True, null=True)
     fecha = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    archivo = CloudinaryField(
-    resource_type="raw"
-)
-
+    archivo = models.URLField(blank=True, null=True) 
+    
     def __str__(self):
         return f"{self.tipo} - {self.fecha}"
 
