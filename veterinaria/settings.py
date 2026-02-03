@@ -25,7 +25,7 @@ CLOUDINARY_STORAGE = {
     "CLOUD_NAME": "dosni47ce",
     "API_KEY": "356478814254257",
     "API_SECRET": "e9-1o-Y2Q8-ZTPiQ2crIIaUeRHg",
-    "SECURE": True
+    "SECURE": True,
     "ACCESS_MODE": "public"
 }
 
